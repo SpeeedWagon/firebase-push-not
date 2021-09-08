@@ -14,5 +14,6 @@ console.log(messaging);
 messaging.getToken().then((tok) => {
   console.log(tok);
 });
+
 // console.log("indeed");
 // console.log(getToken())
