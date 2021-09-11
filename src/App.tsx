@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
+import React, { useEffect, useState } from "react";
+import localForage from 'localforage'
 import "./App.css";
 import { getApp } from "firebase/app";
 import { getMessaging, onMessage } from "firebase/messaging";
 function App() {
-  const [count, setCount] = useState(0);
+  useEffect(()=>{
+    onMessage(getMessaging(), (payload) => {
+      setCount( payload.notification?.title + " "+ payload.notification?.body!)
+      console.log("Title", payload.notification?.title);
+      console.log("Body", payload.notification?.body);
+    });
+  },[])
+  const [count, setCount] = useState("nothing to show");
   const check = getApp().options;
-  const messaging = getMessaging();
+  const messaging = getMessaging()  ;
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/messaging-sw.js");
   }
   Notification.requestPermission().then((data) => {
     console.log("thanks for granting persimission✨");
   });
-  onMessage(getMessaging(), (payload) => {
-    console.log("Message received. ", payload);
-    // ...
-  });
-  return <code>{JSON.stringify(check)}</code>;
+  // localForage.getItem('notificationPayload',(err)=>{console.log(err)})
+  return <div>
+    <code>{count}</code></div>;
 }
 
 export default App;
