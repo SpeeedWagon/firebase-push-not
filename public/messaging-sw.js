@@ -1,5 +1,9 @@
-importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js');
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
+importScripts(
+  "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"
+);
+importScripts("https://unpkg.com/localforage@1.10.0/dist/localforage.js");
+
 firebase.initializeApp({
   apiKey: "AIzaSyAmIHvAe-EOYY-TUPkcb_Byi74j7qqG9dY",
   projectId: "pushnotifications-8d42a",
@@ -10,14 +14,11 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 console.log(messaging);
-messaging.onBackgroundMessage((payload)=>{
-    console.log(payload)
-    console.log("✨🚀")
-})
+messaging.onBackgroundMessage((payload) => {
+  console.log(payload);
+  console.log("✨🚀");
+  localforage.setItem("message", JSON.stringify(payload));
+});
 messaging.getToken().then((tok) => {
   console.log(tok);
 });
-
-
-// console.log("indeed");
-// console.log(getToken())
